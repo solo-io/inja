@@ -80,6 +80,7 @@ struct ParserConfig {
  */
 struct RenderConfig {
   bool throw_at_missing_includes {true};
+  bool escape_strings {};
 };
 
 } // namespace inja
