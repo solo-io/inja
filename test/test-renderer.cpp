@@ -18,6 +18,7 @@ TEST_CASE("types") {
   data["relatives"]["brother"] = "Chris";
   data["relatives"]["sister"] = "Jenny";
   data["vars"] = {2, 3, 4, 0, -1, -2, -3};
+  data["quoted"] = "\"quoted value\"";
   data["json_pointers"]["example.com"] = "online";
   data["json_pointers"]["and/or"] = "slash";
   data["json_pointers"]["and~or"] = "tilde";
@@ -41,6 +42,11 @@ TEST_CASE("types") {
     CHECK(env.render("{{ \"{{ no_value }}\" }}", data) == "{{ no_value }}");
     CHECK(env.render("{{ @name }}", data) == "@name");
     CHECK(env.render("{{ $name }}", data) == "$name");
+
+    CHECK(env.render("{\"Value\":\"{{ quoted }}\"}", data) == "{\"Value\":\"\"quoted value\"\"}");
+    env.set_escape_strings(true);
+    CHECK(env.render("{\"Value\":\"{{ quoted }}\"}", data) == "{\"Value\":\"\\\"quoted value\\\"\"}");
+    env.set_escape_strings(false);
 
     env.set_element_notation(inja::ElementNotation::Pointer);
     CHECK(env.render("{{ json_pointers/example.com }}", data) == "online");
