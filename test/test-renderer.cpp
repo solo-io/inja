@@ -19,6 +19,9 @@ TEST_CASE("types") {
   data["relatives"]["sister"] = "Jenny";
   data["vars"] = {2, 3, 4, 0, -1, -2, -3};
   data["quoted"] = "\"quoted value\"";
+  data["json_pointers"]["example.com"] = "online";
+  data["json_pointers"]["and/or"] = "slash";
+  data["json_pointers"]["and~or"] = "tilde";
 
   SUBCASE("basic") {
     CHECK(env.render("", data) == "");
@@ -44,6 +47,12 @@ TEST_CASE("types") {
     env.set_escape_strings(true);
     CHECK(env.render("{\"Value\":\"{{ quoted }}\"}", data) == "{\"Value\":\"\\\"quoted value\\\"\"}");
     env.set_escape_strings(false);
+
+    env.set_element_notation(inja::ElementNotation::Pointer);
+    CHECK(env.render("{{ json_pointers/example.com }}", data) == "online");
+    CHECK(env.render("{{ json_pointers/and~1or }}", data) == "slash");
+    CHECK(env.render("{{ json_pointers/and~0or }}", data) == "tilde");
+    env.set_element_notation(inja::ElementNotation::Dot);
 
     CHECK_THROWS_WITH(env.render("{{unknown}}", data), "[inja.exception.render_error] (at 1:3) variable 'unknown' not found");
   }

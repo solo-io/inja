@@ -82,6 +82,11 @@ public:
   void set_lstrip_blocks(bool lstrip_blocks) {
     lexer_config.lstrip_blocks = lstrip_blocks;
   }
+  /// Sets the element notation syntax
+  void set_element_notation(ElementNotation notation) {
+    parser_config.notation = notation;
+    lexer_config.notation = notation;
+  }
 
   /// Sets the config for rendering strings raw or escaped
   void set_escape_strings(bool escape_strings) {
