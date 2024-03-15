@@ -105,7 +105,7 @@ public:
 
   Template parse(std::string_view input) {
     Parser parser(parser_config, lexer_config, template_storage, function_storage);
-    return parser.parse(input, input_path);
+    return *parser.parse(input, input_path);
   }
 
   Template parse_template(const std::string& filename) {
