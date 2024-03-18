@@ -2059,8 +2059,8 @@ public:
                   const FunctionStorage& function_storage)
       : config(parser_config), lexer(lexer_config), template_storage(template_storage), function_storage(function_storage) {}
 
-  std::shared_ptr<Template> parse(std::string_view input, std::string_view path) {
-    auto result = std::make_shared<Template>(static_cast<std::string>(input));
+  std::unique_ptr<Template> parse(std::string_view input, std::string_view path) {
+    auto result = std::make_unique<Template>(static_cast<std::string>(input));
     parse_into(*result, path);
     return result;
   }
